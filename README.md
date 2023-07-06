@@ -18,7 +18,7 @@ This is a lightweight tool that enables seamless loading of CSV data columns int
     unit_price DECIMAL(10,2),
     PRIMARY KEY (id)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+```
    CREATE TABLE position_details (
      id INT(11) NOT NULL,
      instrument_id INT(11) NOT NULL,
