@@ -3,10 +3,10 @@ This is a lightweight tool that enables seamless loading of CSV data columns int
 
 1. Create a MySQL Connection using the user 'root' and the password '123456' and connect to it.
 2. Create a database called "cucumber"
-   create database cucumber;
+   `create database cucumber;`
 
 3. Select the newly created database
-   use cucumber;
+   `use cucumber;`
 
 4. Create the below tables to feed data from the CSV files.
    
