@@ -20,7 +20,7 @@ This is a lightweight tool that enables seamless loading of CSV data columns int
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
    CREATE TABLE position_details (
-     id` INT(11) NOT NULL,
+     id INT(11) NOT NULL,
      instrument_id INT(11) NOT NULL,
      qty DECIMAL(10,2),
      PRIMARY KEY (id)
@@ -36,7 +36,7 @@ This is a lightweight tool that enables seamless loading of CSV data columns int
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-5. Download the project file, extract it and create a folder called `'csv_output'` under 'src' folder. It already contains a folder called 'csv_input'.
+5. Download the project file, extract it and create a folder called `csv_output` under 'src' folder. It already contains a folder called `csv_input`.
 6. Download maven from `https://maven.apache.org/install.html`, copy the path to the bin folder and add it to the `'PATH'` variable under environment variables (user & system).
 7. Check the maven is set up properly by entering the `mvn -version` on a terminal.
 8. Go to the root of the extracted project, open a terminal for that location & type `mvn clean install` which will download the necessary dependencies for the project.
