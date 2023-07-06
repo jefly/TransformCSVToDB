@@ -1,7 +1,7 @@
 # TransformCSVToDB (Cucumber, Java, JDBC, MySQL)
 This is a lightweight tool that enables seamless loading of CSV data columns into a database while providing transformation capabilities. Simplify your data import process and effortlessly transform your CSV data for efficient database integration
 
-1. Create a MySQL Connection using the user 'root' and the password '123456' and connect to it.
+1. Create a MySQL Connection using the user `root` and the password `123456` and connect to it.
 2. Create a database called "cucumber"
    `create database cucumber;`
 
@@ -36,7 +36,7 @@ CREATE TABLE position_report (
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-5. Download the project file, extract it and create a folder called `csv_output` under 'src' folder. It already contains a folder called `csv_input`.
+5. Download the project file, extract it and create a folder called `csv_output` under `src` folder. It already contains a folder called `csv_input`.
 6. Download maven from `https://maven.apache.org/install.html`, copy the path to the bin folder and add it to the `'PATH'` variable under environment variables (user & system).
 7. Check the maven is set up properly by entering the `mvn -version` on a terminal.
 8. Go to the root of the extracted project, open a terminal for that location & type `mvn clean install` which will download the necessary dependencies for the project.
