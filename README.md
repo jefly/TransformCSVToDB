@@ -41,3 +41,4 @@ CREATE TABLE position_report (
 7. Check the maven is set up properly by entering the `mvn -version` on a terminal.
 8. Go to the root of the extracted project, open a terminal for that location & type `mvn clean install` which will download the necessary dependencies for the project.
 9. Run `mvn test`
+10. You can see the output fille `PositionReport.csv` inside `csv_output` folder.
