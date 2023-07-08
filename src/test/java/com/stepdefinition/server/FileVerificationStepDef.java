@@ -25,7 +25,7 @@ import io.cucumber.java.en.When;
 
 public class FileVerificationStepDef {
 
-	private final String output = "src/csv_output/";
+	private static final String OUTPUT = "src/csv_output/";
 	private String filePath = null;
 	private Connection connection = null;
 	private String instrumentFile = null;
@@ -51,7 +51,6 @@ public class FileVerificationStepDef {
 
 		loadInstrumentFile(filePath + instrumentFile);
 		loadPositionFile(filePath + positionFile);
-
 	}
 
 	@When("^the data is transformed$")
@@ -106,6 +105,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -160,7 +160,7 @@ public class FileVerificationStepDef {
 
 	@When("^the application generates the output file \"([^\"]*)\"$")
 	public void generateOutputFile(String outputFile) {
-		generateReport(output + outputFile);
+		generateReport(OUTPUT + outputFile);
 	}
 
 	@Then("^the output file \"([^\"]*)\" should be generated in \"([^\"]*)\"$")
@@ -183,6 +183,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
