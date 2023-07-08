@@ -18,6 +18,8 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import com.stepdefinition.database.DatabaseHandler;
+import com.util.FileUtil;
+import com.util.SqlQueries;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,7 +27,6 @@ import io.cucumber.java.en.When;
 
 public class FileVerificationStepDef {
 
-	private static final String OUTPUT = "src/csv_output/";
 	private String filePath = null;
 	private Connection connection = null;
 	private String instrumentFile = null;
@@ -41,8 +42,8 @@ public class FileVerificationStepDef {
 
 		boolean file1Exists = checkFileExists(instrumentFile, filePath);
 		boolean file2Exists = checkFileExists(positionFile, filePath);
-		assertTrue(file1Exists, "Instrument file doesn't exist: " + instrumentFile);
-		assertTrue(file2Exists, "Position file doesn't exist: " + positionFile);
+		assertTrue(file1Exists, FileUtil.INS_NOT_FOUND + instrumentFile);
+		assertTrue(file2Exists, FileUtil.POS_NOT_FOUND + positionFile);
 
 	}
 
@@ -62,7 +63,7 @@ public class FileVerificationStepDef {
 	public void verifyDatabaseUpdate() {
 
 		boolean databaseUpdated = checkDatabaseUpdate();
-		assertTrue(databaseUpdated, "Database update success");
+		assertTrue(databaseUpdated, FileUtil.DB_SUCCESS);
 
 	}
 
@@ -78,7 +79,7 @@ public class FileVerificationStepDef {
 
 		try (CSVParser parser = CSVFormat.DEFAULT.parse(Files.newBufferedReader(Paths.get(instrumentFile)))) {
 
-			PreparedStatement statement = DatabaseHandler.getPreparedStatement(DatabaseHandler.INSERT_INSTRUMENT);
+			PreparedStatement statement = DatabaseHandler.getPreparedStatement(SqlQueries.INSERT_INSTRUMENT);
 
 			for (CSVRecord record : parser) {
 
@@ -118,7 +119,7 @@ public class FileVerificationStepDef {
 		boolean firstTime = true;
 		try (CSVParser parser = CSVFormat.DEFAULT.parse(Files.newBufferedReader(Paths.get(positionFile)))) {
 
-			PreparedStatement statement = DatabaseHandler.getPreparedStatement(DatabaseHandler.INSERT_POSITION);
+			PreparedStatement statement = DatabaseHandler.getPreparedStatement(SqlQueries.INSERT_POSITION);
 
 			for (CSVRecord record : parser) {
 
@@ -143,6 +144,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -155,12 +157,12 @@ public class FileVerificationStepDef {
 
 		boolean transformedDataReady = checkTransformedDataReady();
 
-		assertTrue(transformedDataReady, "Transformed data is ready");
+		assertTrue(transformedDataReady, FileUtil.TRNSFRM_DATA_RDY);
 	}
 
 	@When("^the application generates the output file \"([^\"]*)\"$")
 	public void generateOutputFile(String outputFile) {
-		generateReport(OUTPUT + outputFile);
+		generateReport(FileUtil.OUTPUT_PATH + outputFile);
 	}
 
 	@Then("^the output file \"([^\"]*)\" should be generated in \"([^\"]*)\"$")
@@ -168,13 +170,13 @@ public class FileVerificationStepDef {
 
 		boolean fileExists = checkFileExists(fileName, filePath);
 
-		assertTrue(fileExists, "Output file doesn't exist: " + fileName);
+		assertTrue(fileExists, FileUtil.OUT_NOT_FOUND + fileName);
 	}
 
 	private void transformDataInDatabase() {
 
 		try {
-			PreparedStatement statement = DatabaseHandler.getPreparedStatement(DatabaseHandler.INSERT_POSITION_REPORT);
+			PreparedStatement statement = DatabaseHandler.getPreparedStatement(SqlQueries.INSERT_POSITION_REPORT);
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -194,6 +196,7 @@ public class FileVerificationStepDef {
 	private boolean checkDatabaseUpdate() {
 
 		try {
+			
 			int count = DatabaseHandler.getRecordCountInPositionReport();
 			return count > 0;
 
@@ -204,6 +207,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -215,14 +219,14 @@ public class FileVerificationStepDef {
 
 		try (CSVPrinter printer = new CSVPrinter(new FileWriter(outputFile), CSVFormat.DEFAULT.withHeader("ID", "PositionID", "ISIN", "Quantity", "Total Price"))) {
 
-			ResultSet resultSet = DatabaseHandler.getResultSet(DatabaseHandler.SELECT_POSITION_REPORT);
+			ResultSet resultSet = DatabaseHandler.getResultSet(SqlQueries.SELECT_POSITION_REPORT);
 
 			while (resultSet.next()) {
-				String id = resultSet.getString("id");
-				String positionId = resultSet.getString("position_id");
-				String isin = resultSet.getString("isin");
-				String quantity = resultSet.getString("qty");
-				String totalPrice = resultSet.getString("total_price");
+				String id = resultSet.getString(FileUtil.ID);
+				String positionId = resultSet.getString(FileUtil.POS_ID);
+				String isin = resultSet.getString(FileUtil.ISIN);
+				String quantity = resultSet.getString(FileUtil.QTY);
+				String totalPrice = resultSet.getString(FileUtil.TOTAL);
 
 				printer.printRecord(id, positionId, isin, quantity, totalPrice);
 			}
@@ -233,6 +237,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -254,6 +259,7 @@ public class FileVerificationStepDef {
 			if (connection != null) {
 				try {
 					connection.close();
+					connection = null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
