@@ -42,8 +42,8 @@ public class FileVerificationStepDef {
 
 		boolean file1Exists = checkFileExists(instrumentFile, filePath);
 		boolean file2Exists = checkFileExists(positionFile, filePath);
-		assertTrue(file1Exists, FileUtil.INS_NOT_FOUND + instrumentFile);
-		assertTrue(file2Exists, FileUtil.POS_NOT_FOUND + positionFile);
+		assertTrue(file1Exists, FileUtil.DB_SUCCESS_MSG + instrumentFile);
+		assertTrue(file2Exists, FileUtil.POS_NOT_FOUND_MSG + positionFile);
 
 	}
 
@@ -63,7 +63,7 @@ public class FileVerificationStepDef {
 	public void verifyDatabaseUpdate() {
 
 		boolean databaseUpdated = checkDatabaseUpdate();
-		assertTrue(databaseUpdated, FileUtil.DB_SUCCESS);
+		assertTrue(databaseUpdated, FileUtil.DB_SUCCESS_MSG);
 
 	}
 
@@ -157,7 +157,7 @@ public class FileVerificationStepDef {
 
 		boolean transformedDataReady = checkTransformedDataReady();
 
-		assertTrue(transformedDataReady, FileUtil.TRNSFRM_DATA_RDY);
+		assertTrue(transformedDataReady, FileUtil.TRNSFRM_DATA_RDY_MSG);
 	}
 
 	@When("^the application generates the output file \"([^\"]*)\"$")
@@ -170,7 +170,7 @@ public class FileVerificationStepDef {
 
 		boolean fileExists = checkFileExists(fileName, filePath);
 
-		assertTrue(fileExists, FileUtil.OUT_NOT_FOUND + fileName);
+		assertTrue(fileExists, FileUtil.OUT_NOT_FOUND_MSG + fileName);
 	}
 
 	private void transformDataInDatabase() {
